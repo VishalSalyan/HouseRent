@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">855434882336-ohjgui0nr0f0j0vdtcrvj9da07a4skma.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://carbuzz-1d4c0.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">855434882336</string>
+    <string name="google_api_key" translatable="false">AIzaSyD6Zkz6ZnXbLSqAyaYqXiIZ8aHZ3AobUHY</string>
+    <string name="google_app_id" translatable="false">1:855434882336:android:8a9f21e12a5bee7deabb45</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD6Zkz6ZnXbLSqAyaYqXiIZ8aHZ3AobUHY</string>
+    <string name="google_storage_bucket" translatable="false">carbuzz-1d4c0.appspot.com</string>
+    <string name="project_id" translatable="false">carbuzz-1d4c0</string>
+</resources>
