@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.houserent.R;
 import com.example.houserent.adapters.ExploreHouseAdapter;
 import com.example.houserent.adapters.NewHouseAdapter;
-import com.example.houserent.data.CarData;
+import com.example.houserent.data.HouseData;
 import com.example.houserent.firebaseRepo.FireBaseRepo;
 import com.example.houserent.firebaseRepo.ServerResponse;
 
@@ -28,11 +28,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView newCarsRecyclerView;
 
-    private ExploreHouseAdapter exploreCarAdapter;
-    private NewHouseAdapter newCarAdapter;
+    private ExploreHouseAdapter exploreHouseAdapter;
+    private NewHouseAdapter newHouseAdapter;
 
-    private ArrayList<CarData> carList = new ArrayList<>();
-    private ArrayList<CarData> newCarList = new ArrayList<>();
+    private ArrayList<HouseData> houseList = new ArrayList<>();
+    private ArrayList<HouseData> newHouseList = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,15 +58,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchNewCar() {
-        FireBaseRepo.I.fetchNewCar(new ServerResponse<ArrayList<CarData>>() {
+        FireBaseRepo.I.fetchNewCar(new ServerResponse<ArrayList<HouseData>>() {
             @Override
-            public void onSuccess(ArrayList<CarData> body) {
+            public void onSuccess(ArrayList<HouseData> body) {
                 if (body.size() == 0) {
                     tvNewCarCollection.setVisibility(View.GONE);
                 }
-                newCarList.clear();
-                newCarList.addAll(body);
-                newCarAdapter.notifyDataSetChanged();
+                newHouseList.clear();
+                newHouseList.addAll(body);
+                newHouseAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -77,15 +77,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchExploreCar() {
-        FireBaseRepo.I.fetchExploreCar(new ServerResponse<ArrayList<CarData>>() {
+        FireBaseRepo.I.fetchExploreCar(new ServerResponse<ArrayList<HouseData>>() {
             @Override
-            public void onSuccess(ArrayList<CarData> body) {
+            public void onSuccess(ArrayList<HouseData> body) {
                 if (body.size() == 0) {
                     tvExploreCar.setVisibility(View.GONE);
                 }
-                carList.clear();
-                carList.addAll(body);
-                exploreCarAdapter.notifyDataSetChanged();
+                houseList.clear();
+                houseList.addAll(body);
+                exploreHouseAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -100,19 +100,15 @@ public class HomeFragment extends Fragment {
         newCarsRecyclerView.setLayoutManager(gridLayoutManager);
 
         // Initialize the adapter and attach it to the RecyclerView
-        newCarAdapter = new NewHouseAdapter(getActivity(), newCarList);
-        newCarsRecyclerView.setAdapter(newCarAdapter);
+        newHouseAdapter = new NewHouseAdapter(getActivity(), newHouseList);
+        newCarsRecyclerView.setAdapter(newHouseAdapter);
     }
 
     private void initializeExploreAdapter() {
-        // set up the RecyclerView in horizontal and vertical
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        //GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        // Initialize the adapter and attach it to the RecyclerView
-        exploreCarAdapter = new ExploreHouseAdapter(getActivity(), carList);
-        mRecyclerView.setAdapter(exploreCarAdapter);
+        exploreHouseAdapter = new ExploreHouseAdapter(getActivity(), houseList);
+        mRecyclerView.setAdapter(exploreHouseAdapter);
     }
 
 }

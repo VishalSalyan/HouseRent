@@ -59,7 +59,7 @@
             android:layout_marginTop="40dp"
             android:background="@color/textColor"
             android:text="Login"
-            android:textColor="@color/whitecolor" />
+            android:textColor="@color/colorWhite" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_marginTop="20dp"
             android:background="@color/textColor"
             android:text="Google Login"
-            android:textColor="@color/whitecolor" />
+            android:textColor="@color/colorWhite" />
 
         <Button
             android:id="@+id/btn_signup"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="@color/whitecolor"
+            android:background="@color/colorWhite"
             android:text="Sign Up"
             android:textColor="@color/textColor" />
 

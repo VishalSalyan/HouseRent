@@ -6,6 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">@color/colorWhite</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white</item>
+
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="MaterialSearchViewStyle">
@@ -27,10 +32,10 @@
         <!-- Change background for the suggestions list view -->
         <item name="searchSuggestionBackground">@android:color/white</item>
 
-        <!-- Change text color for edit text. This will also be the color of the cursor -->
-        <item name="android:textColor">@color/blackcolor</item>
+        <!-- Change text rentalValue for edit text. This will also be the rentalValue of the cursor -->
+        <item name="android:textColor">@color/colorBlack</item>
 
-        <!-- Change hint text color for edit text -->
+        <!-- Change hint text rentalValue for edit text -->
         <item name="android:textColorHint">@color/textGreyColor</item>
 
         <!-- Hint for edit text -->

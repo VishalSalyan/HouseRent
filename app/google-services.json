@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "855434882336",
-    "firebase_url": "https://carbuzz-1d4c0.firebaseio.com",
-    "project_id": "carbuzz-1d4c0",
-    "storage_bucket": "carbuzz-1d4c0.appspot.com"
+    "project_number": "299456604809",
+    "firebase_url": "https://houserent-20131.firebaseio.com",
+    "project_id": "houserent-20131",
+    "storage_bucket": "houserent-20131.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:855434882336:android:8a9f21e12a5bee7deabb45",
+        "mobilesdk_app_id": "1:299456604809:android:393942f25c827e38be3458",
         "android_client_info": {
           "package_name": "com.example.houserent"
         }
       },
       "oauth_client": [
         {
-          "client_id": "855434882336-ohjgui0nr0f0j0vdtcrvj9da07a4skma.apps.googleusercontent.com",
+          "client_id": "299456604809-1dhu6r8n3ft13d392ad3bse3o5ehfnnc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD6Zkz6ZnXbLSqAyaYqXiIZ8aHZ3AobUHY"
+          "current_key": "AIzaSyBkJEBzSG0N8n-vWDZAzEnOAWFvTrXxG0M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "855434882336-ohjgui0nr0f0j0vdtcrvj9da07a4skma.apps.googleusercontent.com",
+              "client_id": "299456604809-1dhu6r8n3ft13d392ad3bse3o5ehfnnc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

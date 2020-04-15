@@ -3,35 +3,35 @@
 3    package="com.example.houserent.test" >
 4
 5    <uses-sdk
-5-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:5:5-74
+5-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:5:5-74
 6        android:minSdkVersion="16"
-6-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:5:15-41
+6-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:5:15-41
 7        android:targetSdkVersion="29" />
-7-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:5:42-71
+7-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:5:42-71
 8
 9    <instrumentation
-9-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:11:5-15:71
+9-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:11:5-15:71
 10        android:name="androidx.test.runner.AndroidJUnitRunner"
-10-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:11:22-76
+10-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:11:22-76
 11        android:functionalTest="false"
-11-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:14:22-52
+11-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:14:22-52
 12        android:handleProfiling="false"
-12-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:13:22-53
+12-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:13:22-53
 13        android:label="Tests for com.example.houserent"
-13-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:15:22-69
+13-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:15:22-69
 14        android:targetPackage="com.example.houserent" />
-14-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:12:22-67
+14-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:12:22-67
 15
 16    <uses-permission android:name="android.permission.REORDER_TASKS" />
 16-->[androidx.test:core:1.2.0] C:\Users\USER\.gradle\caches\transforms-2\files-2.1\26c8d79583766c04868d2250789d5546\core-1.2.0\AndroidManifest.xml:24:5-72
 16-->[androidx.test:core:1.2.0] C:\Users\USER\.gradle\caches\transforms-2\files-2.1\26c8d79583766c04868d2250789d5546\core-1.2.0\AndroidManifest.xml:24:22-69
 17
 18    <application android:debuggable="true" >
-18-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:7:5-9:19
-18-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:7:18-43
+18-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:7:5-9:19
+18-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:7:18-43
 19        <uses-library android:name="android.test.runner" />
-19-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:8:9-60
-19-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger8433566608182017422.xml:8:23-57
+19-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:8:9-60
+19-->E:\AndroidProjects\HouseRent\app\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3418237940638601364.xml:8:23-57
 20
 21        <activity
 21-->[androidx.test:core:1.2.0] C:\Users\USER\.gradle\caches\transforms-2\files-2.1\26c8d79583766c04868d2250789d5546\core-1.2.0\AndroidManifest.xml:27:9-33:20

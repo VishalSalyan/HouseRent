@@ -20,9 +20,8 @@
         android:title="Search"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/bottom_search"
-        android:enabled="true"
-        android:icon="@drawable/search"
-        android:title="Search"
+        android:id="@+id/bottom_more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more"
         app:showAsAction="ifRoom" />
 </menu>

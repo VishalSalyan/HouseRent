@@ -1,18 +1,28 @@
 package com.example.houserent.firebaseRepo;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
-import com.example.houserent.data.CarData;
+import com.example.houserent.data.FaqData;
+import com.example.houserent.data.HouseData;
+import com.example.houserent.data.FavouriteHouseData;
 import com.example.houserent.data.UserData;
+import com.example.houserent.utils.Constants;
 import com.example.houserent.utils.SessionData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -23,10 +33,16 @@ public class FireBaseRepo {
     }
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference userRef = database.getReference("user");
-    private DatabaseReference exploreCarRef = database.getReference("explore_car");
-    private DatabaseReference newCarRef = database.getReference("new_car");
-    private DatabaseReference carCollectionRef = database.getReference("car_collection");
+    private DatabaseReference userRef = database.getReference(Constants.USER);
+    private DatabaseReference bunglowsCollectionRef = database.getReference(Constants.BUNGLOWS_COLLECTION);
+    private DatabaseReference flatsCollectionRef = database.getReference(Constants.FLATS_COLLECTION);
+    private DatabaseReference villaCollectionRef = database.getReference(Constants.VILLA_COLLECTION);
+    private DatabaseReference faqRef = database.getReference(Constants.FAQ);
+
+
+    //File Storage
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference mStorageReference = storage.getReference();
 
     public void signUp(final UserData userData, final ServerResponse<Boolean> serverResponse) {
         userRef.push().setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -42,15 +58,15 @@ public class FireBaseRepo {
         });
     }
 
-    public void login(final UserData userData, final ServerResponse<Boolean> serverResponse) {
+    public void login(final String email, final String password, final ServerResponse<UserData> serverResponse) {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserData user = snapshot.getValue(UserData.class);
                     assert user != null;
-                    if (user.getName().equals(userData.getName()) && user.getPassword().equals(userData.getPassword())) {
-                        serverResponse.onSuccess(true);
+                    if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                        serverResponse.onSuccess(user);
                         break;
                     }
                 }
@@ -63,13 +79,13 @@ public class FireBaseRepo {
         });
     }
 
-    public void fetchExploreCar(final ServerResponse<ArrayList<CarData>> serverResponse) {
-        exploreCarRef.addValueEventListener(new ValueEventListener() {
+    public void fetchExploreCar(final ServerResponse<ArrayList<HouseData>> serverResponse) {
+        bunglowsCollectionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<CarData> carList = new ArrayList<>();
+                ArrayList<HouseData> carList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CarData carData = snapshot.getValue(CarData.class);
+                    HouseData carData = snapshot.getValue(HouseData.class);
                     carList.add(carData);
                 }
                 serverResponse.onSuccess(carList);
@@ -82,13 +98,13 @@ public class FireBaseRepo {
         });
     }
 
-    public void fetchNewCar(final ServerResponse<ArrayList<CarData>> serverResponse) {
-        newCarRef.addValueEventListener(new ValueEventListener() {
+    public void fetchNewCar(final ServerResponse<ArrayList<HouseData>> serverResponse) {
+        flatsCollectionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<CarData> carList = new ArrayList<>();
+                ArrayList<HouseData> carList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CarData carData = snapshot.getValue(CarData.class);
+                    HouseData carData = snapshot.getValue(HouseData.class);
                     carList.add(carData);
                 }
                 serverResponse.onSuccess(carList);
@@ -101,13 +117,13 @@ public class FireBaseRepo {
         });
     }
 
-    public void fetchCollection(final ServerResponse<ArrayList<CarData>> serverResponse) {
-        carCollectionRef.addValueEventListener(new ValueEventListener() {
+    public void fetchCollection(final ServerResponse<ArrayList<HouseData>> serverResponse) {
+        villaCollectionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<CarData> carList = new ArrayList<>();
+                ArrayList<HouseData> carList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CarData carData = snapshot.getValue(CarData.class);
+                    HouseData carData = snapshot.getValue(HouseData.class);
                     carList.add(carData);
                 }
                 serverResponse.onSuccess(carList);
@@ -155,14 +171,14 @@ public class FireBaseRepo {
         });
     }
 
-    public void getCarDetails(final String id, String mode, final ServerResponse<CarData> serverResponse) {
+    public void getCarDetails(final String id, String mode, final ServerResponse<HouseData> serverResponse) {
         switch (mode) {
-            case "Collection":
-                carCollectionRef.addValueEventListener(new ValueEventListener() {
+            case Constants.VILLA_COLLECTION:
+                villaCollectionRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            CarData carData = snapshot.getValue(CarData.class);
+                            HouseData carData = snapshot.getValue(HouseData.class);
                             assert carData != null;
                             if (carData.getId().equals(id)) {
                                 serverResponse.onSuccess(carData);
@@ -177,12 +193,12 @@ public class FireBaseRepo {
                     }
                 });
                 break;
-            case "explore_car":
-                exploreCarRef.addValueEventListener(new ValueEventListener() {
+            case Constants.BUNGLOWS_COLLECTION:
+                bunglowsCollectionRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            CarData carData = snapshot.getValue(CarData.class);
+                            HouseData carData = snapshot.getValue(HouseData.class);
                             assert carData != null;
                             if (carData.getId().equals(id)) {
                                 serverResponse.onSuccess(carData);
@@ -197,12 +213,12 @@ public class FireBaseRepo {
                     }
                 });
                 break;
-            case "new_car":
-                newCarRef.addValueEventListener(new ValueEventListener() {
+            case Constants.FLATS_COLLECTION:
+                flatsCollectionRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            CarData carData = snapshot.getValue(CarData.class);
+                            HouseData carData = snapshot.getValue(HouseData.class);
                             assert carData != null;
                             if (carData.getId().equals(id)) {
                                 serverResponse.onSuccess(carData);
@@ -222,28 +238,28 @@ public class FireBaseRepo {
 
     public void searchCar(final ServerResponse<String> serverResponse) {
         SessionData.getInstance().totalCarList.clear();
-        exploreCarRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        bunglowsCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CarData carData = snapshot.getValue(CarData.class);
+                    HouseData carData = snapshot.getValue(HouseData.class);
                     SessionData.getInstance().totalCarList.add(carData);
                 }
                 serverResponse.onSuccess("Explore Car Added");
-                newCarRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                flatsCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            CarData carData = snapshot.getValue(CarData.class);
+                            HouseData carData = snapshot.getValue(HouseData.class);
                             SessionData.getInstance().totalCarList.add(carData);
                         }
                         serverResponse.onSuccess("New Car Added");
 
-                        carCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        villaCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    CarData carData = snapshot.getValue(CarData.class);
+                                    HouseData carData = snapshot.getValue(HouseData.class);
                                     SessionData.getInstance().totalCarList.add(carData);
                                 }
                                 serverResponse.onSuccess("Collection Car Added");
@@ -271,14 +287,14 @@ public class FireBaseRepo {
         });
     }
 
-    public void favouriteCars(final String email, final ServerResponse<ArrayList<String>> serverResponse) {
+    public void wishListHouses(final String email, final ServerResponse<ArrayList<FavouriteHouseData>> serverResponse) {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserData userData = snapshot.getValue(UserData.class);
                     if (userData.getEmail().equals(email)) {
-                        serverResponse.onSuccess(userData.getFavouriteCars());
+                        serverResponse.onSuccess(userData.getFavouriteHouse());
                     }
                 }
             }
@@ -289,4 +305,140 @@ public class FireBaseRepo {
             }
         });
     }
+
+    public void fetchFaq(final ServerResponse<ArrayList<FaqData>> serverResponse) {
+        faqRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<FaqData> faqList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    FaqData faqData = snapshot.getValue(FaqData.class);
+                    faqList.add(faqData);
+                }
+                serverResponse.onSuccess(faqList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void setWishListCars(final boolean isDeleteMode, final String email, final String houseId, final String houseMode, final ServerResponse<String> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    final UserData userData = snapshot.getValue(UserData.class);
+                    assert userData != null;
+                    if (userData.getEmail().equals(email)) {
+                        final String key = snapshot.getKey();
+                        assert key != null;
+
+                        ArrayList<FavouriteHouseData> carWishList = new ArrayList<>();
+                        if (!isDeleteMode) {
+                            FavouriteHouseData wishListData = new FavouriteHouseData();
+                            wishListData.setHouseId(houseId);
+                            wishListData.setMode(houseMode);
+                            carWishList.add(wishListData);
+                            carWishList.addAll(SessionData.getInstance().getLocalData().getFavouriteHouse());
+                            userRef.child(key).child("wishListHouses").setValue(carWishList);
+                            getUserData(email, new ServerResponse<UserData>() {
+                                @Override
+                                public void onSuccess(UserData body) {
+                                    serverResponse.onSuccess(email);
+                                }
+
+                                @Override
+                                public void onFailure(Throwable error) {
+                                }
+                            });
+                        } else {
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    ArrayList<FavouriteHouseData> wishList = new ArrayList<>();
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        UserData userData1 = snapshot.getValue(UserData.class);
+                                        assert userData1 != null;
+                                        for (int i = 0; i < userData1.getFavouriteHouse().size(); i++) {
+                                            if (!userData1.getFavouriteHouse().get(i).getHouseId().equals(houseId)) {
+                                                wishList.add(userData1.getFavouriteHouse().get(i));
+                                            }
+                                        }
+                                    }
+                                    final ArrayList<FavouriteHouseData> finalWishList = new ArrayList<>(wishList);
+                                    userRef.child(key).child("wishListHouses").setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            userRef.child(key).child("wishListHouses").setValue(finalWishList);
+                                            getUserData(email, new ServerResponse<UserData>() {
+                                                @Override
+                                                public void onSuccess(UserData body) {
+                                                    userRef.child(key).child("wishListHouses").setValue(body.getFavouriteHouse());
+                                                    serverResponse.onSuccess(email);
+                                                }
+
+                                                @Override
+                                                public void onFailure(Throwable error) {
+
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    serverResponse.onFailure(new Throwable(databaseError.toString()));
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void getUserData(final String email, final ServerResponse<UserData> serverResponse) {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserData userData = snapshot.getValue(UserData.class);
+
+                    if (userData.getEmail().equals(email)) {
+                        SessionData.getInstance().saveLocalData(userData);
+                        serverResponse.onSuccess(userData);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                serverResponse.onFailure(new Throwable(databaseError.getMessage()));
+            }
+        });
+    }
+
+    public void uploadFile(String fileNameWithExtension, Uri data, final ServerResponse<String> serverResponse) {
+        final StorageReference sRef = mStorageReference.child(fileNameWithExtension);
+        sRef.putFile(data).addOnSuccessListener(taskSnapshot ->
+                sRef.getDownloadUrl().addOnSuccessListener(uri ->
+                        serverResponse.onSuccess(uri.toString())))
+                .addOnFailureListener(exception ->
+                        serverResponse.onFailure(new Throwable(exception.getMessage())))
+                .addOnProgressListener(taskSnapshot ->
+                {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+//                        textViewStatus.setText((int) progress + "% Uploading...");
+                });
+    }
+
 }

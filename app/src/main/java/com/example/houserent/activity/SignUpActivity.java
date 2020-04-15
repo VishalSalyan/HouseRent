@@ -29,46 +29,40 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void clickEvents() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnLogin.setOnClickListener(v -> {
 
-            }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isValidate()) {
-                    return;
-                }
-                String email = etEmail.getText().toString().trim();
-                String userName = etUserName.getText().toString().trim();
-                String phoneNumber = etPhoneNumber.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
-                String confirmPassword = etConfirmPassword.getText().toString().trim();
+        btnSignUp.setOnClickListener(v -> {
+            if (!isValidate()) {
+                return;
+            }
+            String email = etEmail.getText().toString().trim();
+            String userName = etUserName.getText().toString().trim();
+            String phoneNumber = etPhoneNumber.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+            String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-                UserData userData = new UserData();
-                userData.setEmail(email);
-                userData.setName(userName);
-                userData.setPhoneNumber(phoneNumber);
-                userData.setPassword(password);
+            UserData userData = new UserData();
+            userData.setEmail(email);
+            userData.setName(userName);
+            userData.setPhoneNumber(phoneNumber);
+            userData.setPassword(password);
 
-                if (password.equals(confirmPassword)) {
-                    FireBaseRepo.I.signUp(userData, new ServerResponse<Boolean>() {
-                        @Override
-                        public void onSuccess(Boolean body) {
-                            show.longMsg(SignUpActivity.this, "Account Created Successfully");
-                            go.to(SignUpActivity.this, LoginActivity.class);
-                            finish();
-                        }
+            if (password.equals(confirmPassword)) {
+                FireBaseRepo.I.signUp(userData, new ServerResponse<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean body) {
+                        show.longMsg(SignUpActivity.this, "Account Created Successfully");
+                        go.to(SignUpActivity.this, LoginActivity.class);
+                        finish();
+                    }
 
-                        @Override
-                        public void onFailure(Throwable error) {
-                            show.longMsg(SignUpActivity.this, error.getMessage());
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(Throwable error) {
+                        show.longMsg(SignUpActivity.this, error.getMessage());
+                    }
+                });
             }
         });
     }
@@ -87,27 +81,25 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean isValidate() {
         boolean isValid = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            if (etEmail.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etEmail.setError("Please fill this field");
-            }
-            if (etUserName.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etUserName.setError("Please fill this field");
-            }
-            if (etPhoneNumber.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etUserName.setError("Please fill this field");
-            }
-            if (etPassword.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etPassword.setError("Please fill this field");
-            }
-            if (etConfirmPassword.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etConfirmPassword.setError("Please fill this field");
-            }
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etEmail.setError("Please fill this field");
+        }
+        if (etUserName.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etUserName.setError("Please fill this field");
+        }
+        if (etPhoneNumber.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etUserName.setError("Please fill this field");
+        }
+        if (etPassword.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etPassword.setError("Please fill this field");
+        }
+        if (etConfirmPassword.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etConfirmPassword.setError("Please fill this field");
         }
         return isValid;
     }

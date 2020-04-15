@@ -21,60 +21,60 @@ import static com.example.houserent.utils.Toasts.show;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
-    private Button btnLogin, btnSignUp, btnGoogleLogin;
+    private Button btnLogin, btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SessionData.getInstance().initSharedPref(LoginActivity.this);
+
+        if (SessionData.getInstance().isLogin()) {
+            go.to(LoginActivity.this, HomeActivity.class);
+            finish();
+        }
+
         initViews();
         login();
     }
 
     private void login() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isValidate()) {
-                    return;
+        btnLogin.setOnClickListener(v -> {
+            if (!isValidate()) {
+                return;
+            }
+
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            FireBaseRepo.I.login(email, password, new ServerResponse<UserData>() {
+                @Override
+                public void onSuccess(UserData body) {
+                    if (body != null) {
+                        SessionData.getInstance().saveLocalData(body);
+                        SessionData.getInstance().saveLogin(true);
+                        go.to(LoginActivity.this, HomeActivity.class);
+                        finish();
+                    }
                 }
 
-                String email = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
-
-                final UserData userData = new UserData();
-                userData.setName(email);
-                userData.setPassword(password);
-                FireBaseRepo.I.login(userData, new ServerResponse<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean body) {
-                        if (body) {
-                            SessionData.getInstance().userData = userData;
-                            go.to(LoginActivity.this, HomeActivity.class);
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error) {
-                        show.longMsg(LoginActivity.this, error.getMessage());
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Throwable error) {
+                    show.longMsg(LoginActivity.this, error.getMessage());
+                }
+            });
         });
     }
 
     private boolean isValidate() {
         boolean isValid = true;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            if (etEmail.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etEmail.setError("Please fill this field");
-            }
-            if (etPassword.getText().toString().trim().isEmpty()) {
-                isValid = false;
-                etPassword.setError("Please fill this field");
-            }
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etEmail.setError("Please fill this field");
+        }
+        if (etPassword.getText().toString().trim().isEmpty()) {
+            isValid = false;
+            etPassword.setError("Please fill this field");
         }
 
         return isValid;
@@ -87,24 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btn_update);
         btnSignUp = findViewById(R.id.btn_signup);
-        btnGoogleLogin = findViewById(R.id.btn_googleLogin);
 
-
-        //OnClick for Buttons
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
+        btnSignUp.setOnClickListener(v -> go.to(LoginActivity.this, SignUpActivity.class));
     }
 }

@@ -2,6 +2,7 @@ package com.example.houserent.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.houserent.R;
-import com.example.houserent.data.CarData;
+import com.example.houserent.activity.HouseDetailActivity;
+import com.example.houserent.data.HouseData;
+import com.example.houserent.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,15 +24,13 @@ import java.util.ArrayList;
 
 public class HouseCollectionAdapter extends RecyclerView.Adapter<HouseCollectionAdapter.ViewHolder> {
 
-    private ArrayList<CarData> carList;
+    private ArrayList<HouseData> carList;
     private Context context;
 
     // data is passed into the constructor
-    public HouseCollectionAdapter(Context context, ArrayList<CarData> carList) {
-
+    public HouseCollectionAdapter(Context context, ArrayList<HouseData> carList) {
         this.context = context;
         this.carList = carList;
-
     }
 
     // inflates the row layout from xml when needed
@@ -44,18 +45,17 @@ public class HouseCollectionAdapter extends RecyclerView.Adapter<HouseCollection
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        final CarData carData = carList.get(position);
+        final HouseData houseData = carList.get(position);
 
-        holder.name.setText("Electric"/*carData.getCarName()*/);
-        holder.container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        holder.name.setText(houseData.getAddress());
+        holder.container.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HouseDetailActivity.class);
+            intent.putExtra("houseId", houseData.getId());
+            intent.putExtra("mode", Constants.VILLA_COLLECTION);
+            context.startActivity(intent);
         });
 
-//        Picasso.get().load(user.getCarImage()).into(holder.carImage);
-        Picasso.get().load(R.drawable.electric).into(holder.carImage);
+        Picasso.get().load(houseData.getHouseImage()).into(holder.carImage);
 
     }
 

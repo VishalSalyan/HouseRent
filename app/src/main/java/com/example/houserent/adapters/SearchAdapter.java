@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.houserent.R;
-import com.example.houserent.data.CarData;
+import com.example.houserent.data.HouseData;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
-    private ArrayList<CarData> carList;
+    private ArrayList<HouseData> carList;
     private Context context;
 
     // data is passed into the constructor
-    public SearchAdapter(Context context, ArrayList<CarData> carList) {
+    public SearchAdapter(Context context, ArrayList<HouseData> carList) {
 
         this.context = context;
         this.carList = carList;
@@ -44,18 +44,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-//        final CarData carData = carList.get(position);
+        final HouseData houseData = carList.get(position);
 
-        holder.name.setText("Electric"/*carData.getCarName()*/);
-        holder.container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.name.setText(houseData.getAddress());
+        holder.container.setOnClickListener(v -> {
 
-            }
         });
 
-//        Picasso.get().load(user.getCarImage()).into(holder.carImage);
-        Picasso.get().load(R.drawable.electric).into(holder.carImage);
+        Picasso.get().load(houseData.getHouseImage()).into(holder.carImage);
+
 
     }
 
@@ -68,7 +65,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return carList.size();
     }
 
-    public void filterList(ArrayList<CarData> filteredList) {
+    public void filterList(ArrayList<HouseData> filteredList) {
         carList = filteredList;
         notifyDataSetChanged();
     }
